@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %} index {% endblock %}
+{% block content %}
+    
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">Rooms</h2>
+        <div class="grid grid-cols-3 gap-3">
+           {% for room in rooms %}
+                <div>
+                    <a href="{% url 'room_detail' room.id %}">
+
+                        <div>
+                            {% if room.image %}
+                                <img src="{{ room.image.url }}" alt="{{ room.name }}" class="rounded-t-xl" style="height: 300px; object-fit: cover; width: 100%;">
+                            {% else %}
+                            {% endif %}
+                        </div>
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{ room.name }}</h2>
+                      
+                        </div>
+                    </a>
+                </div>
+           {% endfor %}
+        </div>
+    </div>
+   
+
+
+{% endblock %}
