@@ -15,3 +15,20 @@ class TaskForm(forms.ModelForm):
             
 
         }
+
+class EditRoomForm(forms.ModelForm):
+    class Meta:
+        model=Room
+        fields=( 'name',  'image')
+
+        widgets={
+       
+         'name':forms.TextInput(attrs={
+            'class': 'form-control'
+        }),
+     
+   
+         'image':forms.FileInput(attrs={
+            'class': 'form-control'
+        })
+    }

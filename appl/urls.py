@@ -12,7 +12,7 @@ urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
     path('addtask/<int:pk>/', views.task_form_view, name='add_task'),
     path('room_detail/<int:pk>/', views.DetailView.as_view(), name='room_detail'),
-
-
+    path('delete_task/<int:pk>/', views.delete_task, name='delete_task'),  
+    path('edit_room/<int:pk>/',views.edit_room, name='edit_room'),
 
 ]+static(settings.MEDIA_URL , document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

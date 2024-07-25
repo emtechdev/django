@@ -5,7 +5,13 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import  ListView,   DetailView, TemplateView, FormView, CreateView
 from django.urls import reverse_lazy
 from .models import Room, Task, Assign
-from .forms import TaskForm
+from .forms import TaskForm, EditRoomForm
+
+
+class UserListView(ListView):
+    model = Room
+    context_object_name = 'rooms'
+    template_name = 'user_list.html'
 
 
 def login_view(request):
@@ -32,11 +38,13 @@ def register_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
             return redirect('home')
+        else:
+            print(form.errors)  
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
+
 
 def logout_view(request):
     logout(request)
@@ -102,3 +110,31 @@ def task_form_view(request, pk):
         'title': 'New task'
     })
 
+
+
+def delete_task(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    room_pk = task.room.pk
+    task.delete()
+    return redirect('room_detail', pk=room_pk)
+
+
+
+def edit_room(request, pk):
+    room = get_object_or_404(Room, pk=pk)
+
+    if request.method == 'POST':
+        form = EditRoomForm(request.POST, request.FILES, instance=room)
+        if form.is_valid():
+            form.save()
+            submit_action = request.POST.get('submit_action')
+            if submit_action == 'submit':
+                return redirect('home')
+
+    else:
+        form = EditRoomForm(instance=room)
+    
+    return render(request, 'room_form.html', {
+        'form': form, 
+        'title': 'Edit room'
+    })

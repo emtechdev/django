@@ -1,43 +1,63 @@
+<style>
+    .item{
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        padding: 10px; 
+        border-radius: 10px;
+    }
+    @media (max-width: 767px) {
+        .item_container{
+            text-align: center;
+        }
+    }
+</style>
 {% extends "base.html" %}
 {% block title %}{{ room.name }}{% endblock %}
 {% block content %}
 
-<div class="grid grid-cols-5 gap-6">
-    <div class="col-span-3">
+<div class="grid md:grid-cols-5 gap-6 item_container">
+    <div class="col-span-2">
         {% if room.image %}
-        <img src="{{ room.image.url }}" class="rounded-xl" style="height: 300px; object-fit: cover; width: 50%;">
+        <img src="{{ room.image.url }}" class="rounded-xl mx-auto border" style="height: 300px; object-fit: cover; width: 90%;">
         {% endif %}
     </div>
-    <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+    <div class="col-span-3 p-6 bg-gray-100 rounded-xl">
         <h1 class="mb-6 text-3xl">{{ room.name }}</h1>
 
         <div class="mt-6 p-6 bg-white rounded-xl">
-            <p>room</p>
-            <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl">edit</a>
-            <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">delete</a>
+            <p class="text-3xl">room</p>
+            <a href="{% url 'add_task' room.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl">add task</a>
+            <a href="{% url 'edit_room' room.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Edit Room</a>
+
         </div>
 
-        <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Contact Seller</a>
     </div>
 </div>
 
 <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
     <h2 class="mb-12 text-2xl text-center">Tasks</h2>
-    <div class="grid grid-cols-3 gap-3">
+    <div class="grid md:grid-cols-3  gap-8">
         {% for task in tasks %}
-        <div>
+        <div class="item">
             <a href="#">
                 {% if request.user == task.created_by %}
-                <div class="p-6 bg-white rounded-b-xl">
+                <div class="p-6 bg-white rounded-xl text-center">
                     <h2 class="text-2xl">{{ task.name }}</h2>
-                    <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl">Lessons</a>
-                    <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl">Edit</a>
-                    <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a>
+                    <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl mr-3">Edit</a>
+                    <a href="{% url 'delete_task' task.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">delete</a>
+                    {% if task.image %}
+
+                    <img src="{{ task.image.url }}" class="rounded-xl mx-auto border p-2" style="height: 300px; object-fit: cover; width: 90%;">
+                    {% endif %}
+
                 </div>
                 {% else %}
+                {% if task.image %}
+
+                <img src="{{ task.image.url }}" class="rounded-xl mx-auto border p-2 mb-4" style="height: 300px; object-fit: cover; width: 90%;">
+                {% endif %}
+
                 <div class="p-6 bg-white rounded-b-xl">
-                    <h2 class="text-2xl">{{ task.name }}</h2>
-                    <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl">Lessons</a>
+                    <h2 class="text-2xl text-center">{{ task.name }}</h2>
                 </div>
                 {% endif %}
             </a>
@@ -47,10 +67,9 @@
 </div>
 
 {% endblock %}
-
-
    
 
 
 
     
+
