@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('', views.HomeView.as_view(), name='home'),
     path('addtask/<int:pk>/', views.task_form_view, name='add_task'),
+    path('users/', views.UserListView.as_view(), name='users'),
     path('room_detail/<int:pk>/', views.DetailView.as_view(), name='room_detail'),
     path('delete_task/<int:pk>/', views.delete_task, name='delete_task'),  
     path('edit_room/<int:pk>/',views.edit_room, name='edit_room'),

@@ -6,11 +6,11 @@ from django.views.generic import  ListView,   DetailView, TemplateView, FormView
 from django.urls import reverse_lazy
 from .models import Room, Task, Assign
 from .forms import TaskForm, EditRoomForm
-
+from django.contrib.auth.models import User
 
 class UserListView(ListView):
-    model = Room
-    context_object_name = 'rooms'
+    model = User
+    context_object_name = 'users'
     template_name = 'user_list.html'
 
 
