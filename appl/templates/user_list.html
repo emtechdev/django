@@ -1,45 +1,44 @@
-<style>
-    .room_item{
-     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    } 
-    .room-txt{
-     background-color: rgba(3, 13, 46, 0.753);
-     width: 120px; 
-     padding: 10px;
-     font-size: 15px !important;
-    }
-    @media (max-width: 400px) {
-     .room-txt{
-         width: 80px;
-     }
-    }
- </style>
- {% extends "base.html" %}
- {% block title %} index {% endblock %}
- {% block content %}
-     
-     <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-         <h2 class="mb-12 text-2xl text-center">users</h2>
-         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Users</h2>
+    <div class="flex justify-between items-center mb-4">
+        <a href="{% url 'register' %}"> <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          
+        >
+          New +
+        </button></a>
+        <span class="text-lg font-semibold">Total Users:</span>
+      </div>
+      <div className="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-500 border border-slate-500">
+        <thead>
+            <tr>
+                <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">ID</th>
+                <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Password</th>
+                <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for user in users %}
-                 <div class="room_item">
-                     
- 
-             
-                         <div class="p-6 bg-white">
-                             <h2 class="text-2xl text-center room-txt mx-auto rounded-xl text-white">{{ user.username }}</h2>
-                             <h2 class="text-2xl text-center room-txt mx-auto rounded-xl text-white">{{ user.id }}</h2>
-                             <h2 class="text-2xl text-center room-txt mx-auto rounded-xl text-white">{{ user.password }}</h2>
-
-
-
-                         </a>
-                 </div>
-                 </div>
+            <tr>
+                <td class="px-6 py-3 text-center text-md font-medium text-black border-b">{{ user.id }}</td>
+                <td class="px-6 py-3 text-center text-md font-medium text-black border-b">{{ user.username }}</td>
+                <td class="px-6 py-3 text-center text-md font-medium text-black border-b">{{ assign.password }}</td>
+                <td class="px-6 py-3 text-center text-md font-medium text-black border-b">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded">Edit</button>
+                    <button class="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded ml-2">Delete</button>
+                  </td>
+            </tr>
             {% endfor %}
-         </div>
-     </div>
-    
+        </tbody>
+    </table>
+</div>
  
- 
- {% endblock %}
+</div>
+{% endblock %}

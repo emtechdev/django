@@ -157,6 +157,11 @@
                     <h2 class="text-2xl">{{ task.name }}</h2>
                     <a href="#" class="inline-block m-4 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl mr-3">Edit</a>
                     <a href="{% url 'delete_task' task.id %}" class="inline-block mt-4 mb-4 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">delete</a>
+                    <form method="post" action="{% url 'room_detail' room.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit" class="inline-block mt-4 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl">Assign to Me</button>
+                    </form>
                     {% if task.image %}
 
                     <img src="{{ task.image.url }}" class="rounded-xl mx-auto border p-2" style="height: 300px; object-fit: cover; width: 90%;">
@@ -171,6 +176,12 @@
 
                 <div class="p-6 bg-white rounded-xl">
                     <h2 class="text-2xl text-center" >{{ task.name }}</h2>
+                    <a href="{% url 'delete_task' task.id %}" class="inline-block mt-4 mb-4 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">delete</a>
+                    <form method="post" action="{% url 'room_detail' room.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit" class="inline-block mt-4 px-6 py-3 text-lg font-semibold bg-green-500 text-white rounded-xl">Assign to Me</button>
+                    </form>
                 </div>
                 {% endif %}
             </a>

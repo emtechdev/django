@@ -180,4 +180,4 @@ class AssignListView(ListView):
     context_object_name = 'assigns'
 
     def get_queryset(self):
-        return Assign.objects.all()
+        return Assign.objects.select_related('task__room', 'user').all()

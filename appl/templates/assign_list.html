@@ -1,3 +1,5 @@
+<!-- assign_list.html -->
+
 {% extends "base.html" %}
 
 {% block title %}Assign List{% endblock %}
@@ -8,19 +10,23 @@
     <table class="min-w-full bg-white">
         <thead>
             <tr>
+                <th class="py-2 px-4 border-b">Done At</th>
                 <th class="py-2 px-4 border-b">Task</th>
                 <th class="py-2 px-4 border-b">User</th>
-                <th class="py-2 px-4 border-b">Done At</th>
+                <th class="py-2 px-4 border-b">Room</th>
+                
                 <th class="py-2 px-4 border-b">Supervisor Approved</th>
                 <th class="py-2 px-4 border-b">Comment</th>
             </tr>
         </thead>
         <tbody>
             {% for assign in assigns %}
-            <tr>
-                <td class="py-2 px-4 border-b">{{ assign.task }}</td>
-                <td class="py-2 px-4 border-b">{{ assign.user }}</td>
+            <tr class="text-center">
                 <td class="py-2 px-4 border-b">{{ assign.done_at }}</td>
+                <td class="py-2 px-4 border-b">{{ assign.task.name }}</td>
+                <td class="py-2 px-4 border-b">{{ assign.user.username }}</td>
+                <td class="py-2 px-4 border-b">{{ assign.task.room.name }}</td>
+                
                 <td class="py-2 px-4 border-b">{{ assign.supervisor_approved }}</td>
                 <td class="py-2 px-4 border-b">{{ assign.comment }}</td>
             </tr>
