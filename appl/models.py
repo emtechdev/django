@@ -29,8 +29,7 @@ class Assign(models.Model):
     supervisor_approved = models.BooleanField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
 
-    class Meta:
-        unique_together = ('task', 'user')
+
 
     def __str__(self):
         return self.user.username

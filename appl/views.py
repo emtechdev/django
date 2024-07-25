@@ -52,8 +52,8 @@ def logout_view(request):
 
 
 
-class HomeView(TemplateView):
-    template_name = 'home.html'
+class RoomView(TemplateView):
+    template_name = 'room.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -62,22 +62,35 @@ class HomeView(TemplateView):
         return context
     
 
+class HomeView(TemplateView):
+    template_name = 'home.html'
+    
+
+       
+
+
 class DetailView(DetailView):
     model = Room
     context_object_name = 'room'
     template_name = 'detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
 
-        
+        context = super().get_context_data(**kwargs)    
         room = self.get_object()
-
         tasks = Task.objects.filter(room=room)
-
         context['tasks'] = tasks
-
         return context
+    
+    def post(self, request, *args, **kwargs):
+
+
+        room = self.get_object()
+        task_id = request.POST.get('task_id')
+        task = get_object_or_404(Task, id=task_id)
+        assign = Assign(task=task, user=request.user)
+        assign.save()
+        return redirect('room_detail', pk=room.id)
     
 
     
@@ -138,3 +151,33 @@ def edit_room(request, pk):
         'form': form, 
         'title': 'Edit room'
     })
+
+
+
+def supervisor_approve(request, pk):
+    room = get_object_or_404(Room, pk=pk)
+
+    if request.method == 'POST':
+        form = EditRoomForm(request.POST, request.FILES, instance=room)
+        if form.is_valid():
+            form.save()
+            submit_action = request.POST.get('submit_action')
+            if submit_action == 'submit':
+                return redirect('home')
+
+    else:
+        form = EditRoomForm(instance=room)
+    
+    return render(request, 'room_form.html', {
+        'form': form, 
+        'title': 'Edit room'
+    })
+
+
+class AssignListView(ListView):
+    model = Assign
+    template_name = 'assign_list.html'
+    context_object_name = 'assigns'
+
+    def get_queryset(self):
+        return Assign.objects.all()

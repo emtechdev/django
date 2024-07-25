@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Assign List{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-semibold mb-4">Assign List</h2>
+    <table class="min-w-full bg-white">
+        <thead>
+            <tr>
+                <th class="py-2 px-4 border-b">Task</th>
+                <th class="py-2 px-4 border-b">User</th>
+                <th class="py-2 px-4 border-b">Done At</th>
+                <th class="py-2 px-4 border-b">Supervisor Approved</th>
+                <th class="py-2 px-4 border-b">Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assign in assigns %}
+            <tr>
+                <td class="py-2 px-4 border-b">{{ assign.task }}</td>
+                <td class="py-2 px-4 border-b">{{ assign.user }}</td>
+                <td class="py-2 px-4 border-b">{{ assign.done_at }}</td>
+                <td class="py-2 px-4 border-b">{{ assign.supervisor_approved }}</td>
+                <td class="py-2 px-4 border-b">{{ assign.comment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="mt-4">
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

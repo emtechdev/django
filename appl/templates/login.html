@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
-<div class="max-w-md mx-auto bg-white p-8 my-8 rounded-lg shadow-md">
-  <h2 class="text-2xl font-semibold mb-4">Login</h2>
+<div class="max-w-md mx-auto bg-white p-8 my-8 rounded-lg shadow-md border">
+  <h2 class="text-2xl font-semibold mb-4 text-center">Login</h2>
   <form method="post">
     {% csrf_token %}
     <div class="mb-4">

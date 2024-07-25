@@ -5,4 +5,10 @@ from .models import  Room, Task, Assign
 
 admin.site.register(Room)
 admin.site.register(Task)
-admin.site.register(Assign)
+
+class AssignAdmin(admin.ModelAdmin):
+    list_display = ('task', 'user', 'done_at', 'supervisor_approved', 'comment')
+    search_fields = ('task__name', 'user__username', 'comment')
+    list_filter = ('supervisor_approved', 'done_at')
+
+admin.site.register(Assign, AssignAdmin)
