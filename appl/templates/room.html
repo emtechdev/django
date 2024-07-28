@@ -15,11 +15,13 @@
      
      <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
          <h2 class="mb-12 text-2xl text-center">Rooms</h2>
+
          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {% for room in rooms %}
-                 <div class="room_item rounded-t-xl">
+            
+                 <div class="room_item rounded-t-xl hvr-bob" data-aos="zoom-in">
                      
- 
+                      <a href="{% url 'room_detail' room.id %}">
                          <div>
                              {% if room.image %}
                                  <img src="{{ room.image.url }}" alt="{{ room.name }}" class="rounded-t-xl" style="height: 300px; object-fit: cover; width: 100%;">
@@ -31,6 +33,7 @@
                              <h2 class="text-2xl text-center room-txt mx-auto rounded-xl text-white">{{ room.name }}</h2>
                          </a>
                  </div>
+                </a>
                  </div>
             {% endfor %}
          </div>

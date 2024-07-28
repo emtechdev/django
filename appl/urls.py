@@ -2,7 +2,7 @@ from django.urls import path, include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import AssignListView, assign_update_view, TaskUpdateView
+from .views import AssignListView, assign_update_view, TaskUpdateView, edit_profile
 
 urlpatterns = [
 
@@ -19,6 +19,8 @@ urlpatterns = [
     path('assigns/', AssignListView.as_view(), name='assign_list'),
     path('assign/update/<int:pk>/', assign_update_view, name='assign_update'),
     path('task/<int:pk>/update/', TaskUpdateView.as_view(), name='task_update'),
+    path('edit_profile/<int:pk>/', edit_profile, name='edit_profile'),
+
 
 
 

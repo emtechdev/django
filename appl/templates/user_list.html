@@ -1,5 +1,5 @@
 <style>
-    .group{
+    .group {
         margin-top: 5px;
     }
 </style>
@@ -11,38 +11,35 @@
 <div class="container mx-auto mt-8">
     <h2 class="text-2xl font-semibold mb-4 text-center">Users</h2>
     <div class="flex justify-between items-center mb-4">
-        <a href="{% url 'register' %}"> <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          
-        >
-          New +
-        </button></a>
+        <a href="{% url 'register' %}">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                New +
+            </button>
+        </a>
         <span class="text-lg font-semibold">Total Users:</span>
-      </div>
-      <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-500 border border-slate-500">
-        <thead>
-            <tr>
-                <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">ID</th>
-                <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Name</th>
-               
-                <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td class="px-6 py-3 text-center text-md font-medium text-black border-b">{{ user.id }}</td>
-                <td class="px-6 py-3 text-center text-md font-medium text-black border-b">{{ user.username }}</td>
-                <td class="px-6 py-3 text-center text-md font-medium text-black border-b">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded">Edit</button>
-                    <button class="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded ml-2">Delete</button>
-                  </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
- 
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-500 border border-slate-500">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">ID</th>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td class="px-6 py-3 text-center text-md font-medium text-black border-b">{{ user.id }}</td>
+                    <td class="px-6 py-3 text-center text-md font-medium text-black border-b">{{ user.username }}</td>
+                    <td class="px-6 py-3 text-center text-md font-medium text-black border-b">
+                        <a href="{% url 'edit_profile' user.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700 hvr-pop">Edit</a>
+                        <button class="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded ml-2">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

@@ -1,12 +1,9 @@
-<style>
-    .assigned {
-        background-color: #4caf50;
-        color: white;
-    }
-</style>
 {% extends "base.html" %}
 {% block title %}{{ room.name }}{% endblock %}
 {% block content %}
+<style>
+   
+</style>
 <div class="grid lg:grid-cols-6 gap-6 item_container">
     <div class="lg:col-span-3" data-aos="zoom-in">
         {% if room.image %}
@@ -26,31 +23,32 @@
 </div>
 
 <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-    <h2 class="mb-12 text-2xl text-center main-title">Tasks</h2>
+    <h2 class="mb-12 text-4xl text-center main-title">Tasks</h2>
     <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
         {% for task in tasks %}
         <div class="item" data-aos="zoom-in">
             <a href="#">
                 <div class="p-6 bg-white rounded-xl text-center">
-                    <h2 class="text-2xl">{{ task.name }}</h2>
+                    {% if task.image %}
+                    <img src="{{ task.image.url }}" class="rounded-xl mx-auto border p-2 mb-3" style="height: 300px; object-fit: cover; width: 100%;">
+                {% else %}
+                    <img src="https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg" class="rounded-xl mx-auto border p-2" style="height: 300px; object-fit: cover; width: 90%;">
+                {% endif %}
+                    <h2 class="text-2xl task_name ">{{ task.name }}</h2>
 
                     {% if request.user.is_authenticated and request.user.profile.kind == '2' %}
-                    <a href="{% url 'task_update' task.id %}" class="inline-block m-4 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl mr-3">Edit</a>
+                    <a href="{% url 'task_update' task.id %}" class="inline-block m-4 px-4 py-2 rounded-lg   bg-blue-500 text-white mr-3 hvr-pop">Edit</a>
                     {% endif %}
 
                     <form class="assign-form" method="post" action="{% url 'room_detail' room.id %}">
                         {% csrf_token %}
                         <input type="hidden" name="task_id" value="{{ task.id }}">
-                        <button type="submit" class="assign-button {% if task.id in assigned_tasks %}assigned{% endif %}" id="submitBtn_{{ task.id }}">
-                            {% if task.id in assigned_tasks %}Assigned{% else %}Assign{% endif %}
+                        <button type="submit" class="assign-button btn bg-gray-500 text-white px-4 py-2 rounded-lg {% if task.id in assigned_tasks %}assigned{% endif %}" id="submitBtn_{{ task.id }}">
+                            {% if task.id in assigned_tasks %}Assigned{% else %}Review{% endif %}
                         </button>
                     </form>
 
-                    {% if task.image %}
-                    <img src="{{ task.image.url }}" class="rounded-xl mx-auto border p-2" style="height: 300px; object-fit: cover; width: 90%;">
-                {% else %}
-                    <img src="https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg" class="rounded-xl mx-auto border p-2" style="height: 300px; object-fit: cover; width: 90%;">
-                {% endif %}
+
                 </div>
             </a>
         </div>
@@ -59,27 +57,54 @@
 </div>
 
 <script>
-    document.querySelectorAll('.assign-form').forEach(form => {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const button = this.querySelector('.assign-button');
-            fetch("{% url 'room_detail' room.id %}", {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    button.classList.add('assigned');
-                    button.textContent = 'Assigned';
-                }
-            });
+   document.querySelectorAll('.assign-form').forEach(form => {
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        const button = this.querySelector('.assign-button');
+        fetch("{% url 'room_detail' room.id %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                button.classList.add('assigned');
+                button.textContent = 'Assigned';
+            } else {
+                button.textContent = 'Assign';
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
         });
     });
+});
+
+let assignsBtn = document.querySelectorAll(".assign-button")
+let assignText = document.querySelector(".assigned-text")
+assignsBtn.forEach((ele) => {
+    ele.addEventListener('click', () => {
+        if(ele.classList.contains("clicked")){
+            ele.classList.remove("clicked")
+            assignText.classList.add("notOk")
+            assignText.classList.remove("Ok")
+        } else {
+            ele.classList.add("clicked")
+            assignText.classList.add("Ok")
+            assignText.classList.remove("notOk")
+        }
+    })
+});
+
 </script>
 {% endblock %}

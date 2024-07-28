@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from . models import Room, Task, Assign, Profile
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 
 
 class UserRegisterForm(UserCreationForm):
@@ -22,6 +23,24 @@ class UserRegisterForm(UserCreationForm):
             profile.save()
         return user
 
+
+class UserForm(UserChangeForm):
+    password = None  
+
+    class Meta:
+        model = User
+        fields = ['username']
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['image', 'kind', 'active']
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username']
 
 class TaskForm(forms.ModelForm):
     class Meta:

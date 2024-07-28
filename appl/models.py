@@ -6,6 +6,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics', null=True, blank=True)
     kind = models.CharField(max_length=200, choices= [('1', 'worker'), ('2', 'supervisor')], default=1)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -51,3 +52,15 @@ class Assign(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+
+# class Product(models.Model):
+#     name = models.CharField(max_length=200)
+#     image = models.ImageField(upload_to='products/', null=True, blank=True)
+
+#     def __str__(self):
+#         return self.name
+    
+# class Api(models.Model):
+#     name = models.CharField(max_length=200) 
+#     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)

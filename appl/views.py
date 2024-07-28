@@ -5,13 +5,14 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import  ListView,   DetailView, TemplateView, FormView, CreateView
 from django.urls import reverse_lazy
 from .models import Room, Task, Assign
-from .forms import TaskForm, EditRoomForm, UserRegisterForm, AssignUpdateForm
+from .forms import TaskForm, EditRoomForm, UserRegisterForm, AssignUpdateForm, ProfileForm, UserForm, UserProfileForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views.generic.edit import UpdateView
+from django.contrib.auth import update_session_auth_hash
 
 class UserListView(ListView):
     model = User
@@ -205,3 +206,31 @@ class TaskUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('room_detail', kwargs={'pk': self.object.room.id})
+    
+
+
+def edit_profile(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    profile = user.profile
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+        password_form = PasswordChangeForm(user, request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid() and password_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            password_form.save()
+            update_session_auth_hash(request, user)  # Important to keep the user logged in after password change
+            return redirect('users') 
+    else:
+        user_form = UserForm(instance=user)
+        profile_form = ProfileForm(instance=profile)
+        password_form = PasswordChangeForm(user)
+
+    return render(request, 'edit_profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'password_form': password_form
+    })
