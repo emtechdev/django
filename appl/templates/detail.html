@@ -35,8 +35,7 @@
                     <h2 class="text-2xl">{{ task.name }}</h2>
 
                     {% if request.user.is_authenticated and request.user.profile.kind == '2' %}
-                    <a href="#" class="inline-block m-4 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl mr-3">Edit</a>
-                    <a href="{% url 'delete_task' task.id %}" class="inline-block mt-4 mb-4 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a>
+                    <a href="{% url 'task_update' task.id %}" class="inline-block m-4 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl mr-3">Edit</a>
                     {% endif %}
 
                     <form class="assign-form" method="post" action="{% url 'room_detail' room.id %}">

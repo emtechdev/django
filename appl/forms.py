@@ -26,13 +26,13 @@ class UserRegisterForm(UserCreationForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('name', 'arabic_name',   'image')
+        fields = ['name', 'arabic_name','image', 'active']
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'block w-full rounded-md mt-2 border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-lg sm:leading-6'}),
             'arabic_name': forms.TextInput(attrs={'class': 'block w-full rounded-md mt-2 border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-lg sm:leading-6'}),
             'image': forms.FileInput(attrs={'class': 'block w-full rounded-md mt-2 bg-white p-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'}),
-            
+            'active': forms.CheckboxInput(attrs={'class': 'block w-full rounded-md mt-2 border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-lg sm:leading-6'}),
 
         }
 

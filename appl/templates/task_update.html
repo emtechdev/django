@@ -1,0 +1,13 @@
+<!-- task_update.html -->
+{% extends "base.html" %}
+{% block title %}Update Task{% endblock %}
+{% block content %}
+<div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-semibold mb-4">Update Task</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-500 text-white rounded-lg px-4 py-2">Update</button>
+    </form>
+</div>
+{% endblock %}

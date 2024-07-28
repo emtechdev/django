@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.1.1/css/hover-min.css" />
+    
 </head>
 <body>
     <nav class="bg-gray-800">
@@ -20,17 +21,17 @@
                 <div class="flex flex-1 items-center justify-center flex-wrap">
                     {% if request.user.is_authenticated %}
                     <div class="absolute flex items-center sm:hidden">
-                        <button type="button"
+                        <button type="button" id="menu-toggle"
                             class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                             aria-controls="mobile-menu" aria-expanded="false">
                             <span class="absolute -inset-0.5"></span>
                             <span class="sr-only">Open main menu</span>
-                            <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            <svg class="block h-6 w-6 menu-open-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                             </svg>
-                            <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            <svg class="hidden h-6 w-6 menu-close-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -44,23 +45,15 @@
                         <a href="{% url 'home' %}"
                             class="rounded-md px-3 py-2 text-sm font-medium {% if request.path == '/' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}"
                             aria-current="{% if request.path == '/' %}page{% endif %}">Home</a>
-                        <div class="relative group mt-2">
                             <a href="{% url 'room' %}"
-                                class="rounded-md px-3 py-2 text-sm font-medium {% if request.path == '/room/' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}"
-                                aria-current="{% if request.path == '/room/' %}page{% endif %}">Rooms</a>
-                            <div class="absolute hidden group-hover:block bg-white text-black rounded-lg border mt-2 w-40 z-20">
-                                {% for room in rooms %}
-                                <a href="{% url 'room_detail' room.id %}"
-                                    class="block px-4 py-2 hover:bg-blue-500 rounded-lg hover:text-white">{{ room.name }}</a>
-                                {% endfor %}
-                            </div>
-                        </div>
+                            class="rounded-md px-3 py-2 text-sm font-medium {% if request.path == '/room/' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}"
+                            aria-current="{% if request.path == '/room/' %}page{% endif %}">Rooms</a>
                         <a href="#"
                             class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Notifications</a>
-                        {% if request.user.is_authenticated and request.user.profile.kind == '2' %}
+                            {% if request.user.is_authenticated and request.user.profile.kind == '2' %}
                         <div class="relative group mt-2">
                             <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Admin</a>
-                            <div class="absolute hidden group-hover:block bg-white text-black rounded-lg border mt-2 z-20 w-40">
+                            <div class="absolute hidden group-hover:block bg-white text-black rounded-lg border mt-2 z-10 w-40">
                                 <a href="{% url 'users' %}" class="block px-4 py-2 hover:bg-blue-500 rounded-t-lg hover:text-white">Users</a>
                                 
                                 <a href="{% url 'assign_list' %}" class="block px-4 py-2 hover:bg-blue-500 rounded-b-lg hover:text-white">Assigns</a>
@@ -80,7 +73,7 @@
                     </form>
                     {% else %}
                     
-                    {% endif %}
+                        {% endif %}
                 </div>
             </div>
         </div>
@@ -88,31 +81,25 @@
         {% if request.user.is_authenticated %}
         <div class="sm:hidden" id="mobile-menu">
             <div class="space-y-1 px-2 pb-3 pt-2">
-                <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
-                    aria-current="page">Home</a>
-                <div class="relative group mt-2">
-                    <a href="{% url 'room' %}"
-                        class="rounded-md px-3 py-2 text-sm font-medium {% if request.path == '/room/' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}"
-                        aria-current="{% if request.path == '/room/' %}page{% endif %}">Rooms</a>
-                    <div class="absolute hidden z-10 group-hover:block bg-white text-black rounded-lg border mt-2 w-40 z-20">
-                        {% for room in rooms %}
-                        <a href="{% url 'room_detail' room.id %}"
-                            class="block px-4 py-2 hover:bg-blue-500 rounded-lg hover:text-white">{{ room.name }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Notifications</a>
-                {% if request.user.is_authenticated and request.user.profile.kind == '2' %}
-                <div class="relative group mt-2">
-                    <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Admin</a>
-                    <div class="absolute hidden group-hover:block bg-white text-black rounded-lg border mt-2 z-20 w-40">
-                        <a href="{% url 'users' %}" class="block px-4 py-2 hover:bg-blue-500 rounded-t-lg hover:text-white">Users</a>
-                        
-                        <a href="{% url 'assign_list' %}" class="block px-4 py-2 hover:bg-blue-500 rounded-b-lg hover:text-white">Assigns</a>
-                    </div>
-                </div>
-                {% endif %}
+                        <a href="{% url 'home' %}"
+                            class="block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}"
+                            aria-current="{% if request.path == '/' %}page{% endif %}">Home</a>
+                            <a href="{% url 'room' %}"
+                            class="block rounded-md px-3 py-2 text-base font-medium {% if request.path == '/room/' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}"
+                            aria-current="{% if request.path == '/room/' %}page{% endif %}">Rooms</a>
+                        <a href="#"
+                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Notifications</a>
+                            {% if request.user.is_authenticated and request.user.profile.kind == '2' %}
+                        <div class="relative group mt-2">
+                            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Admin</a>
+                            <div class="absolute hidden group-hover:block bg-white text-black rounded-lg border  z-10 w-40">
+                                <a href="{% url 'users' %}" class="block px-4 py-2 hover:bg-blue-500 rounded-t-lg hover:text-white">Users</a>
+                                
+                                <a href="{% url 'assign_list' %}" class="block px-4 py-2 hover:bg-blue-500 rounded-b-lg hover:text-white">Assigns</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    
             </div>
         </div>
         {% else %}
@@ -127,6 +114,21 @@
     <script>
         AOS.init();
     </script>
+   
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+        const menu = document.getElementById('mobile-menu');
+        const menuOpenIcon = document.querySelector('.menu-open-icon');
+        const menuCloseIcon = document.querySelector('.menu-close-icon');
+
+        // Toggle the display of the menu
+        menu.classList.toggle('hidden');
+
+        // Toggle the icons
+        menuOpenIcon.classList.toggle('hidden');
+        menuCloseIcon.classList.toggle('hidden');
+    });
+</script>
 </body>
 
 </html>

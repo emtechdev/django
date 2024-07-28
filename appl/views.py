@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.views.generic.edit import UpdateView
 
 class UserListView(ListView):
     model = User
@@ -78,7 +79,7 @@ class DetailView(DetailView):
 
         context = super().get_context_data(**kwargs)    
         room = self.get_object()
-        tasks = Task.objects.filter(room=room)
+        tasks = Task.objects.filter(room=room, active=True)
         context['tasks'] = tasks
         return context
     
@@ -194,3 +195,13 @@ def assign_update_view(request, pk):
         form = AssignUpdateForm(instance=assign)
 
     return render(request, 'assign_update.html', {'form': form})
+
+
+
+class TaskUpdateView(UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'task_update.html'
+
+    def get_success_url(self):
+        return reverse_lazy('room_detail', kwargs={'pk': self.object.room.id})

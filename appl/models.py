@@ -27,6 +27,7 @@ class Task(models.Model):
     description = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to='tasks/', null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -37,6 +38,9 @@ class Assign(models.Model):
     done_at = models.DateTimeField(auto_now_add=True)
     supervisor_approved = models.BooleanField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-done_at']
 
     def save(self, *args, **kwargs):
         if self.task:

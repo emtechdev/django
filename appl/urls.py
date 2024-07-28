@@ -2,7 +2,7 @@ from django.urls import path, include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import AssignListView, assign_update_view
+from .views import AssignListView, assign_update_view, TaskUpdateView
 
 urlpatterns = [
 
@@ -18,6 +18,8 @@ urlpatterns = [
     path('edit_room/<int:pk>/',views.edit_room, name='edit_room'),
     path('assigns/', AssignListView.as_view(), name='assign_list'),
     path('assign/update/<int:pk>/', assign_update_view, name='assign_update'),
+    path('task/<int:pk>/update/', TaskUpdateView.as_view(), name='task_update'),
+
 
 
 ]+static(settings.MEDIA_URL , document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -146,3 +146,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+
+TIME_ZONE = 'Africa/Cairo'
+USE_TZ = True
