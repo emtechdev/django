@@ -52,3 +52,14 @@ class EditRoomForm(forms.ModelForm):
             'class': 'block w-full rounded-md mt-2 bg-white p-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
         })
     }
+        
+class AssignUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Assign
+        fields = ['supervisor_approved', 'comment']
+        widgets={
+   
+         'comment':forms.Textarea(attrs={
+            'class': 'block w-full rounded-md mt-2 mb-2 bg-white p-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+        })
+    }

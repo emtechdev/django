@@ -14,7 +14,7 @@ class Profile(models.Model):
 
 class Room(models.Model):
     name = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='rooms/', null=True, blank=True)
+    image = models.ImageField(upload_to='rooms/', null=True, blank=True, default='default.jpg')
 
     def __str__(self): 
         return self.name
@@ -32,12 +32,17 @@ class Task(models.Model):
         return self.name
 
 class Assign(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     done_at = models.DateTimeField(auto_now_add=True)
     supervisor_approved = models.BooleanField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        if self.task:
+            self.task_name = self.task.name
+            self.room_name = self.task.room.name
+        super().save(*args, **kwargs)
 
 
     def __str__(self):

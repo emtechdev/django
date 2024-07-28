@@ -5,8 +5,12 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import  ListView,   DetailView, TemplateView, FormView, CreateView
 from django.urls import reverse_lazy
 from .models import Room, Task, Assign
-from .forms import TaskForm, EditRoomForm, UserRegisterForm
+from .forms import TaskForm, EditRoomForm, UserRegisterForm, AssignUpdateForm
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class UserListView(ListView):
     model = User
@@ -62,8 +66,6 @@ class RoomView(TemplateView):
 
 class HomeView(TemplateView):
     template_name = 'home.html'
-    
-
        
 
 
@@ -90,8 +92,6 @@ class DetailView(DetailView):
         assign.save()
         return redirect('room_detail', pk=room.id)
     
-
-    
 def task_form_view(request, pk):
     room = Room.objects.get(pk=pk) 
 
@@ -106,7 +106,7 @@ def task_form_view(request, pk):
             
             submit_action = request.POST.get('submit_action')
             if submit_action == 'submit':
-                return redirect('home')
+                return redirect('room_detail', pk=room.pk)  
             elif submit_action == 'submit and add task':
                 return redirect('add_task', pk=room.pk)
             # else:
@@ -179,3 +179,18 @@ class AssignListView(ListView):
 
     def get_queryset(self):
         return Assign.objects.select_related('task__room', 'user').all()
+    
+
+
+def assign_update_view(request, pk):
+    assign = get_object_or_404(Assign, pk=pk)
+
+    if request.method == 'POST':
+        form = AssignUpdateForm(request.POST, instance=assign)
+        if form.is_valid():
+            form.save()
+            return redirect('assign_list')  
+    else:
+        form = AssignUpdateForm(instance=assign)
+
+    return render(request, 'assign_update.html', {'form': form})

@@ -1,5 +1,9 @@
 <!-- assign_list.html -->
-
+<style>
+    .group{
+        margin-top: 5px;
+    }
+</style>
 {% extends "base.html" %}
 
 {% block title %}Assign List{% endblock %}
@@ -7,32 +11,37 @@
 {% block content %}
 <div class="container mx-auto mt-8">
     <h2 class="text-2xl font-semibold mb-4">Assign List</h2>
-    <table class="min-w-full bg-white">
-        <thead>
-            <tr>
-                <th class="py-2 px-4 border-b">Done At</th>
-                <th class="py-2 px-4 border-b">Task</th>
-                <th class="py-2 px-4 border-b">User</th>
-                <th class="py-2 px-4 border-b">Room</th>
-                
-                <th class="py-2 px-4 border-b">Supervisor Approved</th>
-                <th class="py-2 px-4 border-b">Comment</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for assign in assigns %}
-            <tr class="text-center">
-                <td class="py-2 px-4 border-b">{{ assign.done_at }}</td>
-                <td class="py-2 px-4 border-b">{{ assign.task.name }}</td>
-                <td class="py-2 px-4 border-b">{{ assign.user.username }}</td>
-                <td class="py-2 px-4 border-b">{{ assign.task.room.name }}</td>
-                
-                <td class="py-2 px-4 border-b">{{ assign.supervisor_approved }}</td>
-                <td class="py-2 px-4 border-b">{{ assign.comment }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-500 border border-slate-500">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Done At</th>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Task</th>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">User</th>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Room</th>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Supervisor Approved</th>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Comment</th>
+                    <th class="px-6 py-3 text-center text-xs font-bold text-black uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assign in assigns %}
+                <tr>
+                    <td class="px-6 py-3 text-center text-black border-b">{{ assign.done_at }}</td>
+                    <td class="px-6 py-3 text-center text-black border-b">{{ assign.task.name }}</td>
+                    <td class="px-6 py-3 text-center text-black border-b">{{ assign.user.username }}</td>
+                    <td class="px-6 py-3 text-center text-black border-b">{{ assign.task.room.name }}</td>
+                    <td class="px-6 py-3 text-center text-black border-b">{{ assign.supervisor_approved }}</td>
+                    <td class="px-6 py-3 text-center text-black border-b">{{ assign.comment }}</td>
+                    <td class="px-6 py-3 text-center text-black border-b">
+                        <a href="{% url 'assign_update' assign.pk %}" class="text-white bg-blue-500 rounded-lg pl-3 pr-3 pt-1 pb-1">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
 
     <!-- Pagination Controls -->
     <div class="mt-4">
