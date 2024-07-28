@@ -1,6 +1,27 @@
 from django import forms
 from django.contrib.auth.models import User
-from . models import Room, Task, Assign
+from . models import Room, Task, Assign, Profile
+from django.contrib.auth.forms import UserCreationForm
+
+
+class UserRegisterForm(UserCreationForm):
+    kind = forms.ChoiceField(choices=[(1, 'worker'), (2, 'supervisor')], required=True)
+    image = forms.ImageField(required=False)
+
+    class Meta:
+        model = User
+        fields = ['username',  'password1', 'password2', 'kind', 'image']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            profile = Profile(user=user, kind=self.cleaned_data['kind'])
+            if self.cleaned_data['image']:
+                profile.image = self.cleaned_data['image']
+            profile.save()
+        return user
+
 
 class TaskForm(forms.ModelForm):
     class Meta:

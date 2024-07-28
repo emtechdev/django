@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import  ListView,   DetailView, TemplateView, FormView, CreateView
 from django.urls import reverse_lazy
 from .models import Room, Task, Assign
-from .forms import TaskForm, EditRoomForm
+from .forms import TaskForm, EditRoomForm, UserRegisterForm
 from django.contrib.auth.models import User
 
 class UserListView(ListView):
@@ -32,18 +32,16 @@ def login_view(request):
 
 
 
-
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             return redirect('home')
-        else:
-            print(form.errors)  
     else:
-        form = UserCreationForm()
+        form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
 
 
 def logout_view(request):
